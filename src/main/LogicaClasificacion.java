@@ -2,6 +2,7 @@ package main;
 
 import java.util.*;
 
+
 public class LogicaClasificacion {
 
     /**
@@ -15,7 +16,17 @@ public class LogicaClasificacion {
      *         Salida: "odnuM aloH"
      */
     public String invertirCadena(String texto) {
-        return "";
+        Stack<Character> pila = new Stack<>();
+        for (char chapt : texto.toCharArray()) {
+            pila.push(chapt);
+        }
+        StringBuilder resultado = new StringBuilder();
+        while (!pila.isEmpty()) {
+            resultado.append(pila.pop());
+            
+        }
+        
+        return resultado.toString();
     }
 
     /**
@@ -30,7 +41,23 @@ public class LogicaClasificacion {
      *         Salida: true
      */
     public boolean validarSimbolos(String expresion) {
-        return false;
+        Stack<Character> pila = new Stack<>();
+        for (char chap : expresion.toCharArray()) {
+            if (chap == '{' || chap == '[' || chap == '(') {
+                pila.push(chap);
+            } else if (chap == '}' || chap == ']' || chap == ')') {
+                if (pila.isEmpty()) {
+                    return false; 
+                }
+                char ultimo = pila.pop();
+                if ((chap == '}' && ultimo != '{') ||
+                    (chap == ']' && ultimo != '[') ||
+                    (chap == ')' && ultimo != '(')) {
+                    return false; 
+                }
+            }
+        }
+        return pila.isEmpty();
     }
 
     /**
@@ -43,8 +70,16 @@ public class LogicaClasificacion {
      *         Salida: [1, 2, 3, 4]
      */
     public List<Integer> ordenarPila(Stack<Integer> pila) {
+        Stack<Integer> pilaAuxiliar = new Stack<>();
+        while (!pila.isEmpty()) {
+            int temp = pila.pop();
+            while (!pilaAuxiliar.isEmpty() && pilaAuxiliar.peek() > temp) {
+                pila.push(pilaAuxiliar.pop());
+            }
+            pilaAuxiliar.push(temp);
+        }
 
-        return new ArrayList<>();
+        return new ArrayList<>(pilaAuxiliar);
     }
 
     /**
@@ -58,7 +93,18 @@ public class LogicaClasificacion {
      *         Salida: [2, 4, 6, 1, 3, 5]
      */
     public List<Integer> clasificarPorParidad(LinkedList<Integer> original) {
+        LinkedList<Integer> pares = new LinkedList<>();
+        LinkedList<Integer> impares = new LinkedList<>();
 
-        return new ArrayList<>();
+        for (Integer numero : original) {
+            if (numero % 2 == 0) {
+                pares.add(numero);
+            } else {
+                impares.add(numero);
+            }
+        }
+
+        pares.addAll(impares);
+        return new ArrayList<>(pares);
     }
 }
